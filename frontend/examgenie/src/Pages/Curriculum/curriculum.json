@@ -1,0 +1,506 @@
+[
+  {
+    "code": "COMP 002",
+    "prerequisite": "",
+    "equiv": "COMP 002",
+    "description": "Computer Programming 1",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "GEED 032",
+    "prerequisite": "",
+    "equiv": "GEED 032",
+    "description": "Filipinolohiya at Pambansang Kaunlaran",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "COMP 001",
+    "prerequisite": "",
+    "equiv": "COMP 001",
+    "description": "Introduction to Computing",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "GEED 004",
+    "prerequisite": "",
+    "equiv": "GEED 004",
+    "description": "Mathematics in the Modern World",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "NSTP 001",
+    "prerequisite": "",
+    "equiv": "",
+    "description": "National Service Training Program 1",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "PATHFIT 1",
+    "prerequisite": "",
+    "equiv": "PATHFIT 1",
+    "description": "Physical Activity Towards Health and Fitness 1",
+    "units": "2.0",
+    "year": "First Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "ACCO 014",
+    "prerequisite": "",
+    "equiv": "ACCO 014",
+    "description": "Principles of Accounting",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "GEED 005",
+    "prerequisite": "",
+    "equiv": "GEED 005",
+    "description": "Purposive Communication",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "COMP 003",
+    "prerequisite": "COMP 002",
+    "equiv": "COMP 003",
+    "description": "Computer Programming 2",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "Summer Semester"
+  },
+  {
+    "code": "COMP 004",
+    "prerequisite": "GEED 004",
+    "equiv": "COMP 004",
+    "description": "Discrete Structures 1",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "NSTP 002",
+    "prerequisite": "",
+    "equiv": "",
+    "description": "National Service Training Program 2",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "GEED 033",
+    "prerequisite": "GEED 032",
+    "equiv": "GEED 033",
+    "description": "Pagsasalin sa Kontekstong Filipino",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "GEED 010",
+    "prerequisite": "",
+    "equiv": "GEED 010",
+    "description": "People and the Earth’s Ecosystems",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "PATHFIT 2",
+    "prerequisite": "PATHFIT 1",
+    "equiv": "PATHFIT 2",
+    "description": "Physical Activity Towards Health and Fitness 2",
+    "units": "2.0",
+    "year": "First Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "GEED 020",
+    "prerequisite": "",
+    "equiv": "GEED 020",
+    "description": "Politics, Governance and Citizenship",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "GEED 002",
+    "prerequisite": "",
+    "equiv": "GEED 002",
+    "description": "Readings in Philippine History",
+    "units": "3.0",
+    "year": "First Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "ELEC IT-FE1",
+    "prerequisite": "",
+    "equiv": "ELEC IT-FE1",
+    "description": "BSIT Free Elective 1",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "COMP 008",
+    "prerequisite": "",
+    "equiv": "COMP 008",
+    "description": "Data Communications and Networking",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "COMP 006",
+    "prerequisite": "COMP 003",
+    "equiv": "COMP 006",
+    "description": "Data Structures and Algorithms",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "COMP 007",
+    "prerequisite": "COMP 001",
+    "equiv": "COMP 007",
+    "description": "Operating Systems",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "PATHFIT 3",
+    "prerequisite": "PATHFIT 2",
+    "equiv": "PATHFIT 3",
+    "description": "Physical Activity Towards Health and Fitness 3",
+    "units": "2.0",
+    "year": "Second Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "INTE 201",
+    "prerequisite": "COMP 003",
+    "equiv": "INTE 201",
+    "description": "Programming 3 (Structured Programming)",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "GEED 028",
+    "prerequisite": "",
+    "equiv": "GEED 028",
+    "description": "Reading Visual Arts",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "GEED 001",
+    "prerequisite": "",
+    "equiv": "GEED 001",
+    "description": "Understanding the Self",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "ELEC IT-FE2",
+    "prerequisite": "",
+    "equiv": "ELEC IT-FE2",
+    "description": "BSIT Free Elective 2",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "COMP 013",
+    "prerequisite": "COMP 002",
+    "equiv": "COMP 013",
+    "description": "Human Computer Interaction",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "COMP 010",
+    "prerequisite": "COMP 006",
+    "equiv": "COMP 010",
+    "description": "Information Management",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "INTE 202",
+    "prerequisite": "",
+    "equiv": "INTE 202",
+    "description": "Integrative Programming and Technologies 1",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "COMP 012",
+    "prerequisite": "COMP 008",
+    "equiv": "COMP 012",
+    "description": "Network Administration",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "COMP 009",
+    "prerequisite": "COMP 003",
+    "equiv": "COMP 009",
+    "description": "Object Oriented Programming",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "PATHFIT 4",
+    "prerequisite": "PATHFIT 3",
+    "equiv": "PATHFIT 4",
+    "description": "Physical Activity Towards Health and Fitness 4",
+    "units": "2.0",
+    "year": "Second Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "COMP 014",
+    "prerequisite": "",
+    "equiv": "COMP 014",
+    "description": "Quantitative Methods with Modeling and Simulation",
+    "units": "3.0",
+    "year": "Second Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "GEED 006",
+    "prerequisite": "",
+    "equiv": "GEED 006",
+    "description": "Art Appreciation",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "COMP 018",
+    "prerequisite": "",
+    "equiv": "COMP 018",
+    "description": "Database Administration",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "COMP 015",
+    "prerequisite": "",
+    "equiv": "COMP 015",
+    "description": "Fundamentals of Research",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "ELEC IT-E1",
+    "prerequisite": "",
+    "equiv": "",
+    "description": "IT Elective 1",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "COMP 017",
+    "prerequisite": "",
+    "equiv": "COMP 017",
+    "description": "Multimedia",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "INTE 301",
+    "prerequisite": "INTE 202",
+    "equiv": "INTE 301",
+    "description": "Systems Integration and Architecture 1",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "COMP 016",
+    "prerequisite": "COMP 009",
+    "equiv": "COMP 016",
+    "description": "Web Development",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "COMP 019",
+    "prerequisite": "COMP 009",
+    "equiv": "COMP 019",
+    "description": "Applications Development and Emerging Technologies",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "INTE 303",
+    "prerequisite": "COMP 015",
+    "equiv": "INTE 303",
+    "description": "Capstone Project 1",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "GEED 008",
+    "prerequisite": "",
+    "equiv": "GEED 008",
+    "description": "Ethics",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "INTE 302",
+    "prerequisite": "INTE 301",
+    "equiv": "INTE 302",
+    "description": "Information Assurance and Security 1",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "ELEC IT-E2",
+    "prerequisite": "",
+    "equiv": "",
+    "description": "IT Elective 2",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "HRMA 001",
+    "prerequisite": "",
+    "equiv": "HRMA 001",
+    "description": "Principles of Organization and Management",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "GEED 003",
+    "prerequisite": "",
+    "equiv": "GEED 003",
+    "description": "The Contemporary World",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "ELEC IT-E3",
+    "prerequisite": "",
+    "equiv": "",
+    "description": "IT Elective 3",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "Summer Semester"
+  },
+  {
+    "code": "GEED 037",
+    "prerequisite": "",
+    "equiv": "",
+    "description": "Life and Works of Rizal",
+    "units": "3.0",
+    "year": "Third Year",
+    "semester": "Summer Semester"
+  },
+  {
+    "code": "INTE 402",
+    "prerequisite": "INTE 303",
+    "equiv": "",
+    "description": "Capstone Project 2",
+    "units": "3.0",
+    "year": "Fourth Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "INTE 401",
+    "prerequisite": "INTE 302",
+    "equiv": "",
+    "description": "Information Assurance and Security 2",
+    "units": "3.0",
+    "year": "Fourth Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "ELEC IT-E4",
+    "prerequisite": "",
+    "equiv": "",
+    "description": "IT Elective 4",
+    "units": "3.0",
+    "year": "Fourth Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "GEED 007",
+    "prerequisite": "",
+    "equiv": "",
+    "description": "Science, Technology and Society",
+    "units": "3.0",
+    "year": "Fourth Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "COMP 023",
+    "prerequisite": "",
+    "equiv": "",
+    "description": "Social and Professional Issues in Computing",
+    "units": "3.0",
+    "year": "Fourth Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "INTE 403",
+    "prerequisite": "INTE 301",
+    "equiv": "",
+    "description": "Systems Administration and Maintenance",
+    "units": "3.0",
+    "year": "Fourth Year",
+    "semester": "First Semester"
+  },
+  {
+    "code": "INTE 404",
+    "prerequisite": "INTE 303, INTE 302, COMP 019, COMP 008",
+    "equiv": "",
+    "description": "Practicum (500 Hours)",
+    "units": "6.0",
+    "year": "Fourth Year",
+    "semester": "Second Semester"
+  },
+  {
+    "code": "COMP 024",
+    "prerequisite": "HRMA 001",
+    "equiv": "",
+    "description": "Technopreneurship",
+    "units": "3.0",
+    "year": "Fourth Year",
+    "semester": "Second Semester"
+  }
+]
