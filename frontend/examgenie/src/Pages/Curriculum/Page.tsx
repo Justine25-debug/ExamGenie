@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Header1 } from "@/components/ui/navbar";
 import { Footer2 } from "@/components/footer2";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 import curriculumData from "./curriculum.json"; // JSON file
 
@@ -18,6 +20,8 @@ const CurriculumPage = () => {
   );
 
   return (
+    <Link to="/tos">
+    <Button>Go to TOS</Button>
     <div className="min-h-screen flex flex-col">
       <Header1 />
       <main className="flex-grow container mx-auto px-4 py-8">
@@ -96,7 +100,8 @@ const CurriculumPage = () => {
         </div>
       </main>
       <Footer2 />
-    </div>
+    </div> 
+    </Link>
   );
 };
 
