@@ -119,6 +119,43 @@ const TOSPage = () => {
     }, 0);
   };
 
+const validateTOSInputs = () => {
+  if (!numberOfItems || isNaN(Number(numberOfItems)) || Number(numberOfItems) <= 0) {
+    alert("Enter a valid input");
+    return false;
+  }
+
+  for (let i = 0; i < learningOutcomes.length; i++) {
+    const row = rowsData[i] || {};
+    const requiredFields = [
+      "time",
+      "questions",
+      "allocation",
+      "remember",
+      "understand",
+      "apply",
+      "analyze",
+      "evaluate",
+      "create",
+      "itemPlacement",
+    ];
+
+    for (const field of requiredFields) {
+      if (
+        row[field] === undefined ||
+        row[field] === "" ||
+        isNaN(Number(row[field])) ||
+        Number(row[field]) < 0
+      ) {
+        alert("Enter a valid input");
+        return false;
+      }
+    }
+  }
+
+  return true;
+};
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header1 />
@@ -280,7 +317,11 @@ const TOSPage = () => {
         {learningOutcomes.length > 0 && (
           <div className="flex justify-end mt-4">
             <Button
-              onClick={() => setShowSaveScreen(true)}
+              onClick={() => {
+                if (validateTOSInputs()) {
+                  setShowSaveScreen(true);
+                }
+              }}
               className="bg-green-600 text-white hover:bg-green-700"
               disabled={!selectedSchoolYear}
             >
@@ -288,6 +329,7 @@ const TOSPage = () => {
             </Button>
           </div>
         )}
+
 
         {showSaveScreen && (
           <div
@@ -299,11 +341,23 @@ const TOSPage = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <h2 className="text-2xl font-bold mb-4">Table of Specifications</h2>
-              <p className="mb-2"><strong>School Year:</strong> {selectedSchoolYear}</p>
-              <p className="mb-2"><strong>Year Level:</strong> {selectedLevel}</p>
-              <p className="mb-2"><strong>Term:</strong> {selectedTerm}</p>
-              <p className="mb-2"><strong>Subject:</strong> {selectedSubject}</p>
-              <p className="mb-4"><strong>Number of Items:</strong> {numberOfItems}</p>
+
+<div className="flex flex-wrap gap-4 text-sm mb-2">
+  <div><strong>School Year:</strong> {selectedSchoolYear}</div>
+  <div>
+    <strong>Subject:</strong>{" "}
+    {selectedSubject
+      ? `${selectedSubject} - ${subjects.find((s) => s.code === selectedSubject)?.description || ""}`
+      : ""}
+  </div>
+</div>
+
+<div className="flex flex-wrap gap-4 text-sm mb-4">
+  <div><strong>Year Level:</strong> {selectedLevel}</div>
+  <div><strong>Term:</strong> {selectedTerm}</div>
+  <div><strong>No. of Items:</strong> {numberOfItems}</div>
+</div>
+
 
               {/* Render TOS Table read-only here */}
               <table className="table-auto w-full text-sm border-collapse border border-gray-300">
