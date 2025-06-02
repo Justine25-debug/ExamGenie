@@ -4,7 +4,7 @@ import { Footer2 } from "@/components/footer2";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
-import curriculumData from "./curriculum.json"; // JSON file
+import curriculumData from "./curriculum.json";
 
 const years = ["First Year", "Second Year", "Third Year", "Fourth Year"];
 const semesters = ["First Semester", "Second Semester", "Summer Semester"];
@@ -20,40 +20,50 @@ const CurriculumPage = () => {
   );
 
   return (
-    <Link to="/tos">
-    <Button>Go to TOS</Button>
     <div className="min-h-screen flex flex-col">
       <Header1 />
+
       <main className="flex-grow container mx-auto px-4 py-8">
-        {/* Header and Subheader */}
+        {/* Page Heading */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900">HOME</h1>
-          <h2 className="text-2xl font-semibold text-muted-foreground mt-1">BSIT Curriculum</h2>
+          <h2 className="text-2xl font-semibold text-muted-foreground mt-1">
+            BSIT Curriculum
+          </h2>
         </div>
 
-        {/* Dropdown Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+        {/* Filters and View TOS Button */}
+        <div className="flex flex-col md:flex-row gap-4 mb-6 items-center">
           <select
             onChange={(e) => setSelectedYear(e.target.value)}
             className="border rounded px-4 py-2"
-            defaultValue=""
+            value={selectedYear}
           >
             <option value="">Select Year Level</option>
             {years.map((year) => (
-              <option key={year} value={year}>{year}</option>
+              <option key={year} value={year}>
+                {year}
+              </option>
             ))}
           </select>
 
           <select
             onChange={(e) => setSelectedSem(e.target.value)}
             className="border rounded px-4 py-2"
-            defaultValue=""
+            value={selectedSem}
           >
             <option value="">Select Semester</option>
             {semesters.map((sem) => (
-              <option key={sem} value={sem}>{sem}</option>
+              <option key={sem} value={sem}>
+                {sem}
+              </option>
             ))}
           </select>
+
+          {/* View TOS Button inline with filters */}
+          <Link to="/tos">
+            <Button variant="default">View TOS</Button>
+          </Link>
         </div>
 
         {/* Curriculum Table */}
@@ -71,22 +81,30 @@ const CurriculumPage = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredData.map((subj, index) => (
-                <tr key={index} className="border-t">
-                  <td className="p-2">{subj.code}</td>
-                  <td className="p-2">{subj.prerequisite}</td>
-                  <td className="p-2">{subj.equiv}</td>
-                  <td className="p-2">{subj.description}</td>
-                  <td className="p-2">{subj.units}</td>
-                  <td className="p-2">{subj.year}</td>
-                  <td className="p-2">{subj.semester}</td>
+              {filteredData.length > 0 ? (
+                filteredData.map((subj, index) => (
+                  <tr key={index} className="border-t">
+                    <td className="p-2">{subj.code}</td>
+                    <td className="p-2">{subj.prerequisite}</td>
+                    <td className="p-2">{subj.equiv}</td>
+                    <td className="p-2">{subj.description}</td>
+                    <td className="p-2">{subj.units}</td>
+                    <td className="p-2">{subj.year}</td>
+                    <td className="p-2">{subj.semester}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={7} className="p-4 text-center text-gray-500">
+                    No curriculum data found.
+                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>
 
-        {/* Policies and Procedures */}
+        {/* Policies Section */}
         <div className="mt-8 text-sm leading-relaxed text-justify">
           <h3 className="text-xl font-semibold mb-2">Policies and Procedures</h3>
           <p><strong>Grading Policy:</strong> Class Standing (70%) + Exams (30%). Pass mark is 75%.</p>
@@ -99,9 +117,9 @@ const CurriculumPage = () => {
           <p><strong>Delivery Mode:</strong> May be face-to-face or flexible (FLTAs).</p>
         </div>
       </main>
+
       <Footer2 />
-    </div> 
-    </Link>
+    </div>
   );
 };
 

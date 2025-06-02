@@ -3,6 +3,7 @@ import { Header1 } from "@/components/ui/navbar";
 import { Footer2 } from "@/components/footer2";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+//import { Dialog } from "@/components/ui/dialog";
 import curriculumData from "@/Pages/Curriculum/curriculum.json";
 
 const schoolYears = ["2024-2025", "2025-2026", "2026-2027", "2027-2028"];
@@ -10,17 +11,90 @@ const levels = ["First Year", "Second Year", "Third Year", "Fourth Year"];
 const terms = ["First Semester", "Second Semester", "Summer Semester"];
 
 const TOSPage = () => {
-  const [selectedSchoolYear, setSelectedSchoolYear] = useState("");
-  const [selectedLevel, setSelectedLevel] = useState("");
-  const [selectedTerm, setSelectedTerm] = useState("");
-  const [selectedSubject, setSelectedSubject] = useState("");
-  const [numberOfItems, setNumberOfItems] = useState("");
-  const [rowsData, setRowsData] = useState([]);
-  const [showSaveScreen, setShowSaveScreen] = useState(false);
+  const [tosList, setTosList] = useState<any[]>([]);
+  const [showModal, setShowModal] = useState(false);
+ // const [fileUploadIndex, setFileUploadIndex] = useState<number | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
-  const subjects = curriculumData.filter(
-    (item) => item.year === selectedLevel && item.semester === selectedTerm
-  );
+  const createNewTOS = () => ({
+    selectedSchoolYear: "",
+    selectedLevel: "",
+    selectedTerm: "",
+    selectedSubject: "",
+    numberOfItems: "",
+    rowsData: [],
+    saved: false,
+  });
+
+  const [tosForms, setTosForms] = useState<any[]>([createNewTOS()]);
+
+  const handleInputChange = (formIndex: number, rowIndex: number, column: string, value: string) => {
+    const updatedForms = [...tosForms];
+    const updatedRows = [...(updatedForms[formIndex].rowsData || [])];
+    if (!updatedRows[rowIndex]) updatedRows[rowIndex] = {};
+    updatedRows[rowIndex][column] = column === "itemPlacement" ? value : Number(value) || 0;
+    updatedForms[formIndex].rowsData = updatedRows;
+    setTosForms(updatedForms);
+  };
+
+  const getColumnTotal = (rows: any[], column: string) => {
+    return rows.reduce((sum, row) => {
+      const value = row[column];
+      return sum + (isNaN(Number(value)) ? 0 : Number(value));
+    }, 0);
+  };
+
+  const handleSave = (formIndex: number) => {
+    const form = tosForms[formIndex];
+    if (
+      !form.selectedSchoolYear ||
+      !form.selectedLevel ||
+      !form.selectedTerm ||
+      !form.selectedSubject ||
+      !form.numberOfItems ||
+      form.rowsData.length === 0
+    ) {
+      alert("Please complete the form before saving.");
+      return;
+    }
+
+    const newTosList = [...tosList, form];
+    setTosList(newTosList);
+
+    const updatedForms = [...tosForms];
+    updatedForms[formIndex].saved = true;
+    setTosForms(updatedForms);
+  };
+
+  const handleDelete = (formIndex: number) => {
+  const confirmDelete = window.confirm("Are you sure you want to delete this TOS?");
+  if (confirmDelete) {
+    const updatedForms = [...tosForms];
+    updatedForms.splice(formIndex, 1);
+    setTosForms(updatedForms);
+
+    // Also remove from tosList (optional if you still use tosList for anything)
+    const updatedList = [...tosList];
+    updatedList.splice(formIndex, 1);
+    setTosList(updatedList);
+  }
+};
+
+  const handleAddNewTOS = () => {
+    setTosForms([...tosForms, createNewTOS()]);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setUploadedFile(e.target.files[0]);
+    }
+  };
+
+  const handleCreateExam = () => {
+    if (!uploadedFile) return alert("Please upload a file first.");
+    alert("Exam generated using uploaded file and current TOS.");
+    setShowModal(false);
+  };
 
   const majorTopics: Record<string, Record<string, string[]>> = {
     "Second Year_First Semester": {
@@ -102,359 +176,335 @@ const TOSPage = () => {
     },
   };
 
-  const topicKey = `${selectedLevel}_${selectedTerm}`;
-  const learningOutcomes = majorTopics[topicKey]?.[selectedSubject] || [];
-
-  const handleInputChange = (index: number, column: string, value: string) => {
-    const updated = [...rowsData];
-    if (!updated[index]) updated[index] = {};
-    updated[index][column] = column === "itemPlacement" ? value : Number(value) || 0;
-    setRowsData(updated);
-  };
-
-  const getColumnTotal = (column: string) => {
-    return rowsData.reduce((sum, row) => {
-      const value = row[column];
-      return sum + (isNaN(Number(value)) ? 0 : Number(value));
-    }, 0);
-  };
-
-const validateTOSInputs = () => {
-  if (!numberOfItems || isNaN(Number(numberOfItems)) || Number(numberOfItems) <= 0) {
-    alert("Enter a valid input");
-    return false;
-  }
-
-  for (let i = 0; i < learningOutcomes.length; i++) {
-    const row = rowsData[i] || {};
-    const requiredFields = [
-      "time",
-      "questions",
-      "allocation",
-      "remember",
-      "understand",
-      "apply",
-      "analyze",
-      "evaluate",
-      "create",
-      "itemPlacement",
-    ];
-
-    for (const field of requiredFields) {
-      if (
-        row[field] === undefined ||
-        row[field] === "" ||
-        isNaN(Number(row[field])) ||
-        Number(row[field]) < 0
-      ) {
-        alert("Enter a valid input");
-        return false;
-      }
-    }
-  }
-
-  return true;
-};
-
   return (
     <div className="min-h-screen flex flex-col">
       <Header1 />
       <main className="flex-grow container mx-auto px-4 py-8 relative">
         <h1 className="text-3xl font-bold mb-6">Table of Specifications</h1>
 
-        <div className="mb-6 flex flex-wrap gap-4 items-center">
-          <select
-            value={selectedSchoolYear}
-            onChange={(e) => setSelectedSchoolYear(e.target.value)}
-            className="border px-4 py-2 rounded max-w-xs"
-          >
-            <option value="">Select School Year</option>
-            {schoolYears.map((year) => (
-              <option key={year} value={year}>
-                {year}
-              </option>
-            ))}
-          </select>
+        {tosForms.map((form, formIndex) => {
+          const topicKey = `${form.selectedLevel}_${form.selectedTerm}`;
+          const learningOutcomes = majorTopics[topicKey]?.[form.selectedSubject] || [];
 
-          <Input
-            type="number"
-            min={1}
-            placeholder="Number of Items"
-            value={numberOfItems}
-            onChange={(e) => setNumberOfItems(e.target.value)}
-            className="w-40"
-          />
-        </div>
+          const subjects = curriculumData.filter(
+            (item) => item.year === form.selectedLevel && item.semester === form.selectedTerm
+          );
 
-        <div className="flex flex-wrap gap-4 mb-6">
-          <select
-            onChange={(e) => setSelectedLevel(e.target.value)}
-            value={selectedLevel}
-            className="border px-4 py-2 rounded"
-          >
-            <option value="">Select Year Level</option>
-            {levels.map((level) => (
-              <option key={level} value={level}>
-                {level}
-              </option>
-            ))}
-          </select>
-
-          <select
-            onChange={(e) => setSelectedTerm(e.target.value)}
-            value={selectedTerm}
-            className="border px-4 py-2 rounded"
-          >
-            <option value="">Select Term/Period</option>
-            {terms.map((term) => (
-              <option key={term} value={term}>
-                {term}
-              </option>
-            ))}
-          </select>
-
-          <select
-            onChange={(e) => setSelectedSubject(e.target.value)}
-            value={selectedSubject}
-            className="border px-4 py-2 rounded"
-          >
-            <option value="">Select Subject</option>
-            {subjects.map((subj) => (
-              <option key={subj.code} value={subj.code}>
-                {subj.code} - {subj.description}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {learningOutcomes.length > 0 && (
-          <div className="overflow-auto border rounded">
-            <table className="table-auto w-full text-sm">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="p-2">Week</th>
-                  <th className="p-2">Learning Outcome</th>
-                  <th className="p-2">% Time Spent</th>
-                  <th className="p-2">% Questions</th>
-                  <th className="p-2">% Allocation</th>
-                  <th className="p-2">Remember</th>
-                  <th className="p-2">Understand</th>
-                  <th className="p-2">Apply</th>
-                  <th className="p-2">Analyze</th>
-                  <th className="p-2">Evaluate</th>
-                  <th className="p-2">Create</th>
-                  <th className="p-2">Item Placement</th>
-                  <th className="p-2">Test Type</th>
-                </tr>
-              </thead>
-              <tbody>
-                {learningOutcomes.map((topic, index) => (
-                  <tr key={index} className="border-t">
-                    <td className="p-2">{index + 1}</td>
-                    <td className="p-2">{topic}</td>
-                    {[
-                      "time",
-                      "questions",
-                      "allocation",
-                      "remember",
-                      "understand",
-                      "apply",
-                      "analyze",
-                      "evaluate",
-                      "create",
-                    ].map((col) => (
-                      <td className="p-2" key={col}>
-                        <Input
-                          type="number"
-                          min="0"
-                          onChange={(e) =>
-                            handleInputChange(index, col, e.target.value)
-                          }
-                          value={rowsData[index]?.[col] ?? ""}
-                        />
-                      </td>
-                    ))}
-                    <td className="p-2">
-                      <Input
-                        type="number"
-                        min="0"
-                        onChange={(e) =>
-                          handleInputChange(index, "itemPlacement", e.target.value)
-                        }
-                        value={rowsData[index]?.itemPlacement ?? ""}
-                      />
-                    </td>
-                    <td className="p-2">Multiple Choice</td>
-                  </tr>
-                ))}
-                <tr className="font-bold bg-gray-100 border-t">
-                  <td className="p-2" colSpan={2}>
-                    TOTAL
-                  </td>
-                  {[
-                    "time",
-                    "questions",
-                    "allocation",
-                    "remember",
-                    "understand",
-                    "apply",
-                    "analyze",
-                    "evaluate",
-                    "create",
-                  ].map((col) => (
-                    <td className="p-2" key={col}>
-                      {getColumnTotal(col)}
-                    </td>
-                  ))}
-                  <td className="p-2">{getColumnTotal("itemPlacement")}</td>
-                  <td className="p-2">—</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {learningOutcomes.length > 0 && (
-          <div className="flex justify-end mt-4">
-            <Button
-              onClick={() => {
-                if (validateTOSInputs()) {
-                  setShowSaveScreen(true);
-                }
-              }}
-              className="bg-green-600 text-white hover:bg-green-700"
-              disabled={!selectedSchoolYear}
-            >
-              Save TOS
-            </Button>
-          </div>
-        )}
-
-
-        {showSaveScreen && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-auto"
-            onClick={() => setShowSaveScreen(false)}
-          >
-            <div
-              className="bg-white rounded p-6 max-w-full w-[90vw] max-h-[90vh] overflow-auto"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <h2 className="text-2xl font-bold mb-4">Table of Specifications</h2>
-
-<div className="flex flex-wrap gap-4 text-sm mb-2">
-  <div><strong>School Year:</strong> {selectedSchoolYear}</div>
-  <div>
-    <strong>Subject:</strong>{" "}
-    {selectedSubject
-      ? `${selectedSubject} - ${subjects.find((s) => s.code === selectedSubject)?.description || ""}`
-      : ""}
-  </div>
-</div>
-
-<div className="flex flex-wrap gap-4 text-sm mb-4">
-  <div><strong>Year Level:</strong> {selectedLevel}</div>
-  <div><strong>Term:</strong> {selectedTerm}</div>
-  <div><strong>No. of Items:</strong> {numberOfItems}</div>
-</div>
-
-
-              {/* Render TOS Table read-only here */}
-              <table className="table-auto w-full text-sm border-collapse border border-gray-300">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="border border-gray-300 p-2">Week</th>
-                    <th className="border border-gray-300 p-2">Learning Outcome</th>
-                    <th className="border border-gray-300 p-2">% Time Spent</th>
-                    <th className="border border-gray-300 p-2">% Questions</th>
-                    <th className="border border-gray-300 p-2">% Allocation</th>
-                    <th className="border border-gray-300 p-2">Remember</th>
-                    <th className="border border-gray-300 p-2">Understand</th>
-                    <th className="border border-gray-300 p-2">Apply</th>
-                    <th className="border border-gray-300 p-2">Analyze</th>
-                    <th className="border border-gray-300 p-2">Evaluate</th>
-                    <th className="border border-gray-300 p-2">Create</th>
-                    <th className="border border-gray-300 p-2">Item Placement</th>
-                    <th className="border border-gray-300 p-2">Test Type</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {learningOutcomes.map((topic, index) => (
-                    <tr key={index} className="border border-gray-300">
-                      <td className="border border-gray-300 p-2 text-center">{index + 1}</td>
-                      <td className="border border-gray-300 p-2">{topic}</td>
-                      {[
-                        "time",
-                        "questions",
-                        "allocation",
-                        "remember",
-                        "understand",
-                        "apply",
-                        "analyze",
-                        "evaluate",
-                        "create",
-                      ].map((col) => (
-                        <td
-                          key={col}
-                          className="border border-gray-300 p-2 text-center"
-                        >
-                          {rowsData[index]?.[col] ?? 0}
-                        </td>
+          return (
+            <div key={formIndex} className="mb-12 border p-4 rounded shadow-sm">
+              {!form.saved ? (
+                <>
+                  <div className="mb-4 flex flex-wrap gap-4 items-center">
+                    <select
+                      value={form.selectedSchoolYear}
+                      onChange={(e) => {
+                        const updated = [...tosForms];
+                        updated[formIndex].selectedSchoolYear = e.target.value;
+                        setTosForms(updated);
+                      }}
+                      className="border px-4 py-2 rounded max-w-xs"
+                    >
+                      <option value="">Select School Year</option>
+                      {schoolYears.map((year) => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
                       ))}
-                      <td className="border border-gray-300 p-2 text-center">
-                        {rowsData[index]?.itemPlacement ?? 0}
-                      </td>
-                      <td className="border border-gray-300 p-2 text-center">
-                        Multiple Choice
-                      </td>
-                    </tr>
-                  ))}
-                  <tr className="font-bold bg-gray-200 border border-gray-300">
-                    <td className="border border-gray-300 p-2 text-center" colSpan={2}>
-                      TOTAL
-                    </td>
-                    {[
-                      "time",
-                      "questions",
-                      "allocation",
-                      "remember",
-                      "understand",
-                      "apply",
-                      "analyze",
-                      "evaluate",
-                      "create",
-                    ].map((col) => (
-                      <td
-                        key={col}
-                        className="border border-gray-300 p-2 text-center"
-                      >
-                        {getColumnTotal(col)}
-                      </td>
-                    ))}
-                    <td className="border border-gray-300 p-2 text-center">
-                      {getColumnTotal("itemPlacement")}
-                    </td>
-                    <td className="border border-gray-300 p-2 text-center">—</td>
-                  </tr>
-                </tbody>
-              </table>
+                    </select>
 
-              <div className="flex justify-end gap-4 mt-4">
-                <Button
-                  onClick={() => window.print()}
-                  className="bg-blue-600 text-white hover:bg-blue-700"
-                >
-                  Print
-                </Button>
-                <Button
-                  onClick={() => setShowSaveScreen(false)}
-                  className="bg-gray-400 hover:bg-gray-500 text-black"
-                >
-                  OK
-                </Button>
-              </div>
+                    <Input
+                      type="number"
+                      min={1}
+                      placeholder="Number of Items"
+                      value={form.numberOfItems}
+                      onChange={(e) => {
+                        const updated = [...tosForms];
+                        updated[formIndex].numberOfItems = e.target.value;
+                        setTosForms(updated);
+                      }}
+                      className="w-40"
+                    />
+                  </div>
+
+                  <div className="flex flex-wrap gap-4 mb-4">
+                    <select
+                      value={form.selectedLevel}
+                      onChange={(e) => {
+                        const updated = [...tosForms];
+                        updated[formIndex].selectedLevel = e.target.value;
+                        setTosForms(updated);
+                      }}
+                      className="border px-4 py-2 rounded"
+                    >
+                      <option value="">Select Year Level</option>
+                      {levels.map((level) => (
+                        <option key={level} value={level}>
+                          {level}
+                        </option>
+                      ))}
+                    </select>
+
+                    <select
+                      value={form.selectedTerm}
+                      onChange={(e) => {
+                        const updated = [...tosForms];
+                        updated[formIndex].selectedTerm = e.target.value;
+                        setTosForms(updated);
+                      }}
+                      className="border px-4 py-2 rounded"
+                    >
+                      <option value="">Select Term</option>
+                      {terms.map((term) => (
+                        <option key={term} value={term}>
+                          {term}
+                        </option>
+                      ))}
+                    </select>
+
+                    <select
+                      value={form.selectedSubject}
+                      onChange={(e) => {
+                        const updated = [...tosForms];
+                        updated[formIndex].selectedSubject = e.target.value;
+                        setTosForms(updated);
+                      }}
+                      className="border px-4 py-2 rounded"
+                    >
+                      <option value="">Select Subject</option>
+                      {subjects.map((subj) => (
+                        <option key={subj.code} value={subj.code}>
+                          {subj.code} - {subj.description}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {learningOutcomes.length > 0 && (
+                    <>
+                      <div className="overflow-auto border rounded mb-4">
+                        <table className="table-auto w-full text-sm">
+                          <thead className="bg-gray-100">
+                            <tr>
+                              <th className="p-2">Week</th>
+                              <th className="p-2">Learning Outcome</th>
+                              {[
+                                "% Time",
+                                "% Questions",
+                                "% Allocation",
+                                "Remember",
+                                "Understand",
+                                "Apply",
+                                "Analyze",
+                                "Evaluate",
+                                "Create",
+                                "Item Placement",
+                                "Test Type",
+                              ].map((label) => (
+                                <th key={label} className="p-2">{label}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {learningOutcomes.map((topic, rowIndex) => (
+                              <tr key={rowIndex} className="border-t">
+                                <td className="p-2">{rowIndex + 1}</td>
+                                <td className="p-2">{topic}</td>
+                                {[
+                                  "time",
+                                  "questions",
+                                  "allocation",
+                                  "remember",
+                                  "understand",
+                                  "apply",
+                                  "analyze",
+                                  "evaluate",
+                                  "create",
+                                ].map((col) => (
+                                  <td key={col} className="p-2">
+                                    <Input
+                                      type="number"
+                                      min={0}
+                                      value={form.rowsData[rowIndex]?.[col] ?? ""}
+                                      onChange={(e) =>
+                                        handleInputChange(formIndex, rowIndex, col, e.target.value)
+                                      }
+                                    />
+                                  </td>
+                                ))}
+                                <td className="p-2">
+                                  <Input
+                                    type="number"
+                                    min={0}
+                                    value={form.rowsData[rowIndex]?.itemPlacement ?? ""}
+                                    onChange={(e) =>
+                                      handleInputChange(formIndex, rowIndex, "itemPlacement", e.target.value)
+                                    }
+                                  />
+                                </td>
+                                <td className="p-2">Multiple Choice</td>
+                              </tr>
+                            ))}
+
+                            <tr className="font-bold bg-gray-100 border-t">
+                              <td className="p-2" colSpan={2}>TOTAL</td>
+                              {[
+                                "time",
+                                "questions",
+                                "allocation",
+                                "remember",
+                                "understand",
+                                "apply",
+                                "analyze",
+                                "evaluate",
+                                "create",
+                              ].map((col) => (
+                                <td key={col} className="p-2">
+                                  {getColumnTotal(form.rowsData, col)}
+                                </td>
+                              ))}
+                              <td className="p-2">{getColumnTotal(form.rowsData, "itemPlacement")}</td>
+                              <td className="p-2">—</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <div className="flex justify-end">
+                        <Button
+                          className="bg-green-600 text-white hover:bg-green-700"
+                          onClick={() => handleSave(formIndex)}
+                        >
+                          Save TOS
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <h2 className="text-xl font-semibold mb-2">Saved TOS #{formIndex + 1}</h2>
+                  <p><strong>School Year:</strong> {form.selectedSchoolYear}</p>
+                  <p><strong>Level:</strong> {form.selectedLevel}</p>
+                  <p><strong>Term:</strong> {form.selectedTerm}</p>
+                  <p><strong>Subject:</strong> {form.selectedSubject}</p>
+                  <p><strong>Number of Items:</strong> {form.numberOfItems}</p>
+
+                  <div className="overflow-auto border rounded mt-4">
+                    <table className="table-auto w-full text-sm">
+                      <thead className="bg-gray-100">
+                        <tr>
+                          <th className="p-2">Week</th>
+                          <th className="p-2">Learning Outcome</th>
+                          {[
+                            "% Time",
+                            "% Questions",
+                            "% Allocation",
+                            "Remember",
+                            "Understand",
+                            "Apply",
+                            "Analyze",
+                            "Evaluate",
+                            "Create",
+                            "Item Placement",
+                            "Test Type",
+                          ].map((label) => (
+                            <th key={label} className="p-2">{label}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {learningOutcomes.map((topic, index) => (
+                          <tr key={index} className="border-t">
+                            <td className="p-2">{index + 1}</td>
+                            <td className="p-2">{topic}</td>
+                            {[
+                              "time",
+                              "questions",
+                              "allocation",
+                              "remember",
+                              "understand",
+                              "apply",
+                              "analyze",
+                              "evaluate",
+                              "create",
+                            ].map((col) => (
+                              <td key={col} className="p-2 text-center">
+                                {form.rowsData[index]?.[col] ?? 0}
+                              </td>
+                            ))}
+                            <td className="p-2 text-center">{form.rowsData[index]?.itemPlacement ?? 0}</td>
+                            <td className="p-2 text-center">Multiple Choice</td>
+                          </tr>
+                        ))}
+                        <tr className="font-bold bg-gray-100 border-t">
+                          <td className="p-2" colSpan={2}>TOTAL</td>
+                          {[
+                            "time",
+                            "questions",
+                            "allocation",
+                            "remember",
+                            "understand",
+                            "apply",
+                            "analyze",
+                            "evaluate",
+                            "create",
+                          ].map((col) => (
+                            <td key={col} className="p-2 text-center">
+                              {getColumnTotal(form.rowsData, col)}
+                            </td>
+                          ))}
+                          <td className="p-2 text-center">{getColumnTotal(form.rowsData, "itemPlacement")}</td>
+                          <td className="p-2">—</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="flex gap-4 mt-4">
+                    <Button
+                      className="bg-blue-600 text-white hover:bg-blue-700"
+                      onClick={() => {
+                        setFileUploadIndex(formIndex);
+                        setShowModal(true);
+                      }}
+                    >
+                      Create Exam
+                    </Button>
+                    <Button
+                      className="bg-green-600 text-white hover:bg-green-700"
+                      onClick={() => window.print()}
+                    >
+                      Print
+                    </Button>
+                    <Button
+                      className="bg-red-600 text-white hover:bg-red-700"
+                      onClick={() => handleDelete(formIndex)}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
-          </div>
+          );
+        })}
+
+        <div className="mt-6">
+          <Button variant="secondary" onClick={handleAddNewTOS}>
+            Add New TOS
+          </Button>
+        </div>
+
+        {showModal && (
+          <Dialog open={showModal} onOpenChange={setShowModal}>
+            <div className="bg-white p-6 rounded shadow-lg max-w-md mx-auto mt-12">
+              <h2 className="text-lg font-semibold mb-4">Upload File to Generate Exam</h2>
+              <Input type="file" onChange={handleFileUpload} />
+              <Button className="mt-4 bg-blue-600 text-white" onClick={handleCreateExam}>
+                Generate Exam
+              </Button>
+            </div>
+          </Dialog>
         )}
       </main>
       <Footer2 />
